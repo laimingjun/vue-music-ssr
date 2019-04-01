@@ -12,17 +12,6 @@
             <div class="back" v-show="isOpenComment" @click="toggleOpenComment">
               <i class="el-icon-arrow-left"></i>返回
             </div>
-            <!-- <div class="control">
-              <div class="icon" @click="toggleFullScreenWindow" :title="fullScreenWindowTip">
-                <i class="iconfont" :class="fullScreenWindowIcon"></i>
-              </div>
-              <div class="icon" @click="toggleMaxWindow" :title="maxWindowTip">
-                <i class="iconfont" :class="maxWindowIcon"></i>
-              </div>
-              <div class="icon" @click="closeWindow" title="关闭">
-                <i class="iconfont icon-guanbi"></i>
-              </div>
-            </div> -->
           </div>
           <div class="main">
             <div class="cover-lyric" v-show="!isOpenComment">
@@ -64,8 +53,8 @@
                     </ul>
                   </scroll>
                 </div>
-                <div v-else-if="currentMusic.id" class="no-lyric">暂获取不到歌词</div>
-                <div v-else class="no-lyric">让生活充满音乐~</div>
+                <div v-else-if="currentMusic.id && lyric" class="no-lyric">让音乐充满生活~</div>
+                <div v-else class="no-lyric">暂获取不到歌词</div>
               </div>
             </div>
             <div class="comment" v-show="isOpenComment">
@@ -130,7 +119,7 @@
                   </div>
                   <!-- <div class="play-sound">
                     <i class="iconfont icon-yinliang"></i>
-                  </div> -->
+                  </div>-->
                 </div>
                 <div class="right">
                   <div class="playlist" @click.stop="togglePlayList">
@@ -334,10 +323,6 @@ export default {
       this.isOpenComment = !this.isOpenComment
     },
     toggleFullScreen(flag) {
-      if (this.fullScreenWindow) {
-        // ipcRenderer.send('quit-full-screen-window')
-        this.fullScreenWindow = false
-      }
       if (flag && this.lyric && this.currentLyricIndex > 5) {
         // 设置延迟，全屏展开动画为300ms
         setTimeout(() => {
@@ -381,9 +366,6 @@ export default {
       this.setPlayList(savePlayList(list))
     },
     toggleFullScreenWindow() {
-      // this.fullScreenWindow
-      //   ? ipcRenderer.send('quit-full-screen-window')
-      //   : ipcRenderer.send('full-screen-window')
       this.fullScreenWindow = !this.fullScreenWindow
     },
     toggleLike(id) {
@@ -407,6 +389,10 @@ export default {
     },
     ready() {
       this.musicReady = true
+      if (this.lyric && this.lyric.state === 0) {
+        console.log('ready lyric play()')
+        this.lyric.play()
+      }
     },
     ended() {
       if (this.playMode === playMode.singleLoop) {
@@ -475,15 +461,18 @@ export default {
       })
     },
     getLyric() {
+      this.lyric = true
       this.currentMusic.getLyric().then(res => {
         if (res.nolyric || (res.lrc && res.lrc.lyric === '')) {
           this.lyric = false
           this.currentMusic.lyric = false
         } else {
-          this.currentMusic.lyric = res.lrc.lyric
+          let lyric = typeof res === 'string' ? res : res.lrc.lyric
+          this.currentMusic.lyric = lyric
           this.currentLyricIndex = 0
-          this.lyric = new Lyric(res.lrc.lyric, this.handleLyric)
-          if (this.playing) {
+          this.lyric = new Lyric(lyric, this.handleLyric)
+          if (this.playing && this.musicReady) {
+            console.log('getLyric Play()')
             this.lyric.play()
           }
         }
@@ -747,7 +736,7 @@ $mv-bg: #ced9dc;
             .lyric {
               flex: 1;
               margin: 50px 0;
-              overflow: auto;
+              overflow: hidden;
               li {
                 line-height: $lyric-item-height;
                 font-size: $font-size-medium-x;

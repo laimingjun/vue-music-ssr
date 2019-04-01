@@ -131,6 +131,7 @@ $menu-title-color: #bee1e5;
 $item-hover-color: rgba(69, 174, 187, 0.2);
 $head-photo-width: 40px;
 .menu-wrapper {
+  box-sizing: border-box;
   width: $menu-width;
   height: calc(100% - #{$player-height});
   padding: 20px;

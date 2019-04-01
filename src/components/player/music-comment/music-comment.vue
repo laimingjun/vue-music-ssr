@@ -76,7 +76,7 @@ export default {
         this.$nextTick(() => {
           let pageEl = document.querySelector('.pages-container')
           if (pageEl) {
-            pageEL.classList.add('border-fff')
+            pageEl.classList.add('border-fff')
           }
         })
       }

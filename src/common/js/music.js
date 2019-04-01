@@ -2,7 +2,8 @@ import {
   ERR_OK,
   musicUrl,
   lyricUrl,
-  checkMusicUrl
+  checkMusicUrl,
+  DEFAULT_ERR_MSG
 } from '@/api/config'
 import {
   httpGet

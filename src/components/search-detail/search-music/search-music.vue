@@ -6,17 +6,13 @@
         播放全部
       </div>
     </div>
-    <music-list
-      v-if="songs.length"
-      :musicList="songs"
-      @select="addPlayList"
-    ></music-list>
+    <music-list v-if="songs.length" :musicList="songs" @select="addPlayList"></music-list>
   </div>
 </template>
 
 <script>
 import MusicList from '@/base/music-list/music-list'
-import { ERR_OK, musicDetailUrl } from '@/api/config'
+import { ERR_OK, musicDetailUrl, DEFAULT_ERR_MSG } from '@/api/config'
 import { httpGet } from '@/api/httpUtil'
 import { mapActions } from 'vuex'
 import {
@@ -40,8 +36,20 @@ export default {
       httpGet(musicDetailUrl, { ids: item.id }).then(res => {
         if (res.code === ERR_OK) {
           let music = createMusic(res.songs[0])
+          return new Promise(music.checkMusic())
+        }
+      }).then(res => {
+        if (res.success) {
           this.insertMusic({ music })
         }
+      }).catch(err => {
+        let message = DEFAULT_ERR_MSG
+        if (err.response && err.response.data.message) {
+          message = err.response.data.message
+        }
+        this.$message({
+          message
+        })
       })
     },
     playAll() {

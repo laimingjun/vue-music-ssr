@@ -194,7 +194,9 @@ export default {
         if (res.code === ERR_OK) {
           this.songDetail = res.playlist
           this.$nextTick(() => {
-            this.$refs.scroll.setScrollTop(0)
+            if (this.$refs.scroll) {
+              this.$refs.scroll.setScrollTop(0)
+            }
             let songDescriptHeight = this.$refs.songDescription.offsetHeight
             this.isShowMoreIcon = songDescriptHeight > omitDescriptonHeight
           })
