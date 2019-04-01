@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import Vue from 'vue'
 import axios from 'axios'
 import ElementUI from 'element-ui'
@@ -10,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/common/scss/index.scss'
 
 if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseHost = 'http://203.195.168.79:3000'
+  axios.defaults.baseHost = 'http://203.195.168.79:3200/api'
 } else {
   axios.defaults.baseHost = 'http://localhost:3000'
 }
@@ -25,12 +26,13 @@ Vue.use(VueLazyload, {
 
 Vue.use(ElementUI)
 
-/* eslint-disable no-new */
-new Vue({
-  components: {
-    App
-  },
-  router: createRouter(),
-  store: createStore(),
-  render: h => h(App)
-}).$mount('#app')
+export function createApp() {
+  const router = createRouter()
+  const store = createStore()
+  const app = new Vue({
+    router,
+    store,
+    render: h => h(App)
+  })
+  return { app, router, store }
+}

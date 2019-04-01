@@ -74,7 +74,10 @@ export default {
     total(newVal) {
       if (newVal > this.pageSize) {
         this.$nextTick(() => {
-          document.querySelector('.pages-container').classList.add('border-fff')
+          let pageEl = document.querySelector('.pages-container')
+          if (pageEl) {
+            pageEL.classList.add('border-fff')
+          }
         })
       }
       this.$emit('update:commentCount', newVal)

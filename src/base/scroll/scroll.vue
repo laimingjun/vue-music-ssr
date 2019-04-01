@@ -25,29 +25,31 @@ export default {
   },
   methods: {
     setScrollTop(height) {
-      const scrollDom = document.querySelector(`.${this.className}`);
-      scrollDom.scrollTop = height;
+      const scrollDom = document.querySelector(`.${this.className}`)
+      if (scrollDom) {
+        scrollDom.scrollTop = height
+      }
     }
   },
   created() {
     // 防止冲突
     num += 1;
-    this.className = `_${num}scroll_`;
+    this.className = `_${num}scroll_`
   },
   mounted() {
-    let _this = this;
-    const scrollDom = document.querySelector(`.${this.className}`);
-    if (this.onScroll) {
-      scrollDom.addEventListener("scroll", function() {
+    let _this = this
+    const scrollDom = document.querySelector(`.${this.className}`)
+    if (this.onScroll && scrollDom) {
+      scrollDom.addEventListener("scroll", function () {
         if (
           scrollDom.scrollTop >
           scrollDom.scrollHeight -
-            scrollDom.clientHeight -
-            TRIGGER_SCROLL_BOTTOM_HEIGHT
+          scrollDom.clientHeight -
+          TRIGGER_SCROLL_BOTTOM_HEIGHT
         ) {
-          _this.$emit("scrollBottom");
+          _this.$emit("scrollBottom")
         }
-      });
+      })
     }
   }
 };
