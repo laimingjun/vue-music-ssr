@@ -2,10 +2,10 @@
   <div class="recommmend-wrapper">
     <h2>
       <span>为你推荐歌单</span>
-      <span class="more">更多</span>
+      <span @click="toAllTag" class="more">更多</span>
     </h2>
     <ul class="tag">
-      <li v-for="item in hotTags" :key="item.id" @click="toSongByTag(item.name)" >{{item.name}}</li>
+      <li v-for="item in hotTags" :key="item.id" @click="toSongByTag(item.name)">{{item.name}}</li>
       <li @click="toAllTag">全部分类</li>
     </ul>
     <song-list @selectSong="selectSong" :songList="songList"></song-list>
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'scss/variable.scss';
+@import "scss/variable.scss";
 $recommend-bg: #184658;
 $tag-width: 13.6%;
 .recommmend-wrapper {

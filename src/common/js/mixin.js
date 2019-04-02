@@ -44,6 +44,10 @@ export const songMixin = {
         }
       })
     },
+    toggleOrder(order) {
+      this.currentOrder = order
+      this._getTopSongList()
+    },
     _getTopSongList() {
       this.songList = []
       let offset = (this.currentPage - 1) * this.pageSize

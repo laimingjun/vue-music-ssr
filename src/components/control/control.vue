@@ -27,17 +27,6 @@
         >
       </div>
     </div>
-    <!-- <div class="btn-group">
-      <div class="icon" @click="hideWindow" title="最小化">
-        <i class="iconfont icon-icon30"></i>
-      </div>
-      <div class="icon" @click="toggleMaxWindow" :title="maxWindowTip">
-        <i class="iconfont" :class="maxWindowIcon"></i>
-      </div>
-      <div class="icon" @click="closeWindow" title="关闭">
-        <i class="iconfont icon-guanbi"></i>
-      </div>
-    </div> -->
     <div class="search-content" v-if="isShowSearchContent">
       <component
         :suggestList="suggestList"
@@ -52,7 +41,6 @@
 </template>
 
 <script>
-// import { ipcRenderer } from 'electron'
 import { ERR_OK, searchSuggestUrl } from '@/api/config'
 import { httpGet } from '@/api/httpUtil'
 import SearchHot from './search-hot/search-hot'
@@ -137,13 +125,8 @@ export default {
     removeSearch() {
       this.removeSearchHistory()
     },
-    hideWindow() {
-      // ipcRenderer.send('hide-window')
-    },
-    closeWindow() {
-      // ipcRenderer.send('window-all-closed')
-    },
     _getSerachSuggest() {
+      if(this.keyword === '') return
       httpGet(searchSuggestUrl, {
         keywords: this.keyword
       }).then(res => {

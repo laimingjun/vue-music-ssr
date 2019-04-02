@@ -53,10 +53,6 @@ export default {
     this._getTopSongList()
   },
   methods: {
-    toggleOrder(order) {
-      this.currentOrder = order
-      this._getTopSongList()
-    },
     _getHotTag() {
       httpGet(hotTagUrl).then(res => {
         if (res.code === ERR_OK) {

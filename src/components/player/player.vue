@@ -254,8 +254,7 @@ export default {
       playModeVisible: {
         full: false,
         mini: false
-      },
-      fullScreenWindow: false
+      }
     }
   },
   computed: {
@@ -270,12 +269,6 @@ export default {
     },
     disableCls() {
       return this.musicReady ? '' : 'disabled'
-    },
-    fullScreenWindowIcon() {
-      return this.fullScreenWindow ? 'icon-quxiaoquanping' : 'icon-quanping'
-    },
-    fullScreenWindowTip() {
-      return this.fullScreenWindow ? '退出全屏' : '全屏'
     },
     ...mapGetters([
       'playing',
@@ -332,6 +325,11 @@ export default {
       this.setFullScreen(flag)
     },
     togglePlaying() {
+      // 判断播放列表 无歌曲时 直接返回
+      if (this.playList.length < 1) {
+        this.$message('请添加播放列表~')
+        return
+      }
       // 刷新第一次进入时 播放音乐地址为空
       if (this.currentMusic.id && this.musicUrl === null) {
         this.getMusicUrl()
@@ -365,9 +363,6 @@ export default {
       this.saveCurrentPlayIndexHistory(index)
       this.setPlayList(savePlayList(list))
     },
-    toggleFullScreenWindow() {
-      this.fullScreenWindow = !this.fullScreenWindow
-    },
     toggleLike(id) {
       let like = !this.userLikeList.includes(id)
       httpGet(likeMuiscUrl, {
@@ -390,7 +385,6 @@ export default {
     ready() {
       this.musicReady = true
       if (this.lyric && this.lyric.state === 0) {
-        console.log('ready lyric play()')
         this.lyric.play()
       }
     },
@@ -472,7 +466,6 @@ export default {
           this.currentLyricIndex = 0
           this.lyric = new Lyric(lyric, this.handleLyric)
           if (this.playing && this.musicReady) {
-            console.log('getLyric Play()')
             this.lyric.play()
           }
         }
@@ -540,12 +533,12 @@ export default {
       if (newMusic.id === oldMusic.id) {
         return
       }
-      if (this.lyric && this.playing) {
+      if (this.lyric && this.playing && typeof this.lyric !== 'boolean') {
         this.lyric.stop()
       }
       if (newMusic.id) {
         this.$nextTick(() => {
-          if (this.lyric) {
+          if (this.lyric && this.$refs.lyricScroll) {
             this.$refs.lyricScroll.setScrollTop(0)
           }
           this.updateWindowTitle()

@@ -36,20 +36,20 @@ export default {
       httpGet(musicDetailUrl, { ids: item.id }).then(res => {
         if (res.code === ERR_OK) {
           let music = createMusic(res.songs[0])
-          return new Promise(music.checkMusic())
+          music.checkMusic().then(res => {
+            if (res.success) {
+              this.insertMusic({ music })
+            }
+          }).catch(err => {
+            let message = DEFAULT_ERR_MSG
+            if (err.response && err.response.data.message) {
+              message = err.response.data.message
+            }
+            this.$message({
+              message
+            })
+          })
         }
-      }).then(res => {
-        if (res.success) {
-          this.insertMusic({ music })
-        }
-      }).catch(err => {
-        let message = DEFAULT_ERR_MSG
-        if (err.response && err.response.data.message) {
-          message = err.response.data.message
-        }
-        this.$message({
-          message
-        })
       })
     },
     playAll() {
