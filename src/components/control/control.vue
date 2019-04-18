@@ -2,14 +2,14 @@
   <!-- 顶部控制栏 -->
   <div class="control">
     <div class="left">
-      <div class="icon-item">
-        <i class="el-icon-arrow-left" @click="back"></i>
+      <div class="icon-item" @click="back">
+        <i class="el-icon-arrow-left"></i>
       </div>
-      <div class="icon-item">
-        <i class="el-icon-arrow-right" @click="next"></i>
+      <div class="icon-item" @click="next">
+        <i class="el-icon-arrow-right"></i>
       </div>
-      <div class="icon-item">
-        <i class="iconfont icon-shuaxin" @click="refresh"></i>
+      <div class="icon-item" @click="refresh">
+        <i class="iconfont icon-shuaxin"></i>
       </div>
       <div class="search-group">
         <div class="search-placeholder" v-show="isPlaceholderShow" @click="searchFocus">
@@ -126,7 +126,7 @@ export default {
       this.removeSearchHistory()
     },
     _getSerachSuggest() {
-      if(this.keyword === '') return
+      if (this.keyword === '') return
       httpGet(searchSuggestUrl, {
         keywords: this.keyword
       }).then(res => {

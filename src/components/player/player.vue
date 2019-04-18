@@ -192,7 +192,7 @@
             <i class="iconfont icon-xiayishou"></i>
           </div>
           <div class="play-sound">
-            <i class="iconfont icon-yinliang"></i>
+            <!-- <i class="iconfont icon-yinliang"></i> -->
           </div>
         </div>
         <div class="right">
@@ -339,7 +339,7 @@ export default {
         return
       }
       this.setPlayingState(!this.playing)
-      if (this.lyric) {
+      if (this.lyric && typeof this.lyric !== 'boolean') {
         this.lyric.togglePlay()
       }
     },
@@ -398,7 +398,7 @@ export default {
     singleLoop() {
       this.$refs.musicAudio.currentTime = 0
       this.$refs.musicAudio.play()
-      if (this.lyric) {
+      if (this.lyric && typeof this.lyric !== 'boolean') {
         this.lyric.seek(0)
       }
     },
@@ -438,7 +438,7 @@ export default {
       if (!this.playing) {
         this.togglePlaying()
       }
-      if (this.lyric) {
+      if (this.lyric && typeof this.lyric !== 'boolean') {
         this.lyric.seek(currentTime)
       }
     },
@@ -555,7 +555,7 @@ export default {
           })
         } else {
           this.setPlayingState(true)
-          if (this.lyric) {
+          if (this.lyric && typeof this.lyric !== 'boolean') {
             this.lyric.play()
           }
         }

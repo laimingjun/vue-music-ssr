@@ -2,11 +2,11 @@
 const Koa = require('koa')
 const send = require('koa-send')
 const path = require('path')
-
+const proxyRouter = require('./routers/proxy')
 const app = new Koa()
 
 const isDev = process.env.NODE_ENV === 'development'
-
+console.log(process.env.NODE_ENV)
 app.use(async (ctx, next) => {
   try {
     console.log(`request with path ${ctx.path}`)
@@ -36,7 +36,7 @@ if (!isDev) {
   const staticRouter = require('./routers/static')
   app.use(staticRouter.routes())
 }
-
+app.use(proxyRouter.routes())
 app.use(pageRouter.routes()).use(pageRouter.allowedMethods())
 
 const HOST = process.env.HOST || '0.0.0.0'

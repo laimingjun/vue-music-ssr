@@ -12,7 +12,14 @@
               <i class="iconfont" :class="sexIcon"></i>
               <i class="level">Lv.{{level}}</i>
             </div>
-            <el-popover placement="top" width="160" v-model="logoutProver">
+            <div
+              class="logout"
+              v-if="currentUserInfo.userId === userInfo.userId"
+              @click="logoutDialog"
+            >
+              <i class="iconfont icon-guanbi"></i>退出
+            </div>
+            <!-- <el-popover placement="left-bottom" width="160" v-model="logoutProver">
               <p>您确定要退出吗？</p>
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="logoutProver = false">取消</el-button>
@@ -26,7 +33,7 @@
               >
                 <i class="iconfont icon-guanbi"></i>退出
               </div>
-            </el-popover>
+            </el-popover>-->
           </div>
           <div class="label-group">
             <div
@@ -88,6 +95,15 @@ export default {
     }
   },
   methods: {
+    logoutDialog() {
+      this.$confirm('您确定要退出吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.logout()
+      })
+    },
     logout() {
       httpGet(logoutUrl).then(res => {
         if (res.code === ERR_OK) {
@@ -100,6 +116,10 @@ export default {
           this.setUserLikeList([])
           this.$router.push({
             name: 'MusicTab'
+          })
+          this.$message({
+            message: '退出成功。',
+            type: 'success'
           })
         }
         this.logoutProver = false

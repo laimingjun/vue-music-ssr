@@ -13,7 +13,7 @@ import '@/common/scss/index.scss'
 if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseHost = 'http://203.195.168.79:3200/api'
 } else {
-  axios.defaults.baseHost = 'http://localhost:3000'
+  axios.defaults.baseHost = 'http://localhost:3333/api'
 }
 
 axios.defaults.withCredentials = true
